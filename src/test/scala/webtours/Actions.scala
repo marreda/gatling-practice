@@ -35,4 +35,24 @@ object Actions {
     .get("/login.pl?intro=true")
     .check(status is 200)
     .check(regex("Welcome to Web Tours").exists)
+
+  val searchPageResult: HttpRequestBuilder = http("searchPageResult")
+    .get("/welcome.pl?page=search")
+    .check(status is 200)
+
+  val flightNavigationPageResult: HttpRequestBuilder = http("flightNavigationPageResult")
+    .get("/nav.pl?page=menu&in=flights")
+    .check(status is 200)
+
+  val welcomeReservationsPageResult: HttpRequestBuilder = http("welcomeReservationsPageResult")
+    .get("/reservations.pl?page=welcome")
+    .check(status is 200)
+    .check(css("table select[name=depart] option", "value").findAll.saveAs("departureCities"))
+    .check(css("table select[name=arrive] option", "value").findAll.saveAs("arrivalCities"))
+    .check(css("input[name=advanceDiscount]", "value").saveAs("advanceDiscount"))
+    .check(css("input[name=departDate]", "value").saveAs("departDate"))
+    .check(css("input[name=returnDate]", "value").saveAs("returnDate"))
+    .check(css("input[name=numPassengers]", "value").saveAs("numPassengers"))
+    .check(css("input[name=seatPref][checked=checked]", "value").saveAs("seatPref"))
+    .check(css("input[name=seatType][checked=checked]", "value").saveAs("seatType"))
 }
