@@ -21,7 +21,7 @@ class WebtoursScenario {
       .exec(Actions.loginGetResult)
   }
 
-  val chooseDirectionGroup: ChainBuilder = group("ChooseDirectionAndFindFlight") {
+  val chooseDirectionGroup: ChainBuilder = group("ChooseDirection") {
     exec(Actions.searchPageResult)
       .exec(Actions.flightNavigationPageResult)
       .exec(Actions.welcomeReservationsPageResult)
@@ -41,7 +41,7 @@ class WebtoursScenario {
       })
   }
 
-  val findFlightGroup: ChainBuilder = group("findFlightGroup") {
+  val findFlightGroup: ChainBuilder = group("FindFlight") {
     exec(Actions.flightReservationsResult)
       .exec(session => {
         val outboundFlights = session("outboundFlights").as[Vector[String]]
@@ -54,7 +54,7 @@ class WebtoursScenario {
       })
   }
 
-  val buyTicketGroup: ChainBuilder = group("buyTicketGroup") {
+  val buyTicketGroup: ChainBuilder = group("BuyTicket") {
     exec(Actions.paymentDetailsResult)
       .exec(session => {
         val creditCard = UUID.randomUUID.toString
@@ -65,7 +65,7 @@ class WebtoursScenario {
       .exec(Actions.buyTicketResult)
   }
 
-  val openHomePageGroup: ChainBuilder = group("openHomePageGroup") {
+  val openHomePageGroup: ChainBuilder = group("OpenHomePage") {
     exec(Actions.openHomePage)
       .exec(Actions.homeNavigationPageResult)
       .exec(Actions.loginGetResult)
