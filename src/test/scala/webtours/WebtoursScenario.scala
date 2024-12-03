@@ -36,9 +36,22 @@ class WebtoursScenario {
         val arrivalCity = arrivalCities(indexArrival)
         println("arrive = " + arrivalCity)
 
-        session.set("depart", departureCity)
-        session.set("arrive", arrivalCity)
-        session
+        val newSession = session.setAll(Map("depart" -> departureCity, "arrive" -> arrivalCity))
+        newSession
+      })
+  }
+
+  val findFlightGroup: ChainBuilder = group("findFlightGroup") {
+    exec(Actions.flightReservationsResult)
+      .exec(session => {
+        val outboundFlights = session("outboundFlights").as[Vector[String]]
+
+        val indexDepart = Random.nextInt(outboundFlights.size)
+        val outboundFlight = outboundFlights(indexDepart)
+        println("outboundFlight = " + outboundFlight)
+
+        val newSession = session.set("outboundFlight", outboundFlight)
+        newSession
       })
   }
 
@@ -46,4 +59,5 @@ class WebtoursScenario {
     .feed(users)
     .exec(loginGroup)
     .exec(chooseDirectionGroup)
+    .exec(findFlightGroup)
 }
